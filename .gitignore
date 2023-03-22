@@ -1,0 +1,4 @@
+/deps/
+/test/lua/
+/doc/tags
+fennel
