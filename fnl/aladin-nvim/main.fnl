@@ -1,5 +1,6 @@
 (module aladin-nvim.main
-  {autoload {curl plenary.curl}})
+  {autoload {curl plenary.curl
+             util aladin-nvim.util}})
 
 (defn init []
   (+ 1 2))
@@ -14,7 +15,7 @@
       "ttbkey="
       ttb-key
       "&Query="
-      keyword
+      (util.urlencode keyword)
       "&QueryType=Title"
       "&MaxResults=10"
       "&SearchTarget=Book"

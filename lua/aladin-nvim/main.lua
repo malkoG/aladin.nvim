@@ -11,15 +11,16 @@ do
   _2amodule_locals_2a = (_2amodule_2a)["aniseed/locals"]
 end
 local autoload = (require("aniseed.autoload")).autoload
-local curl = autoload("plenary.curl")
+local curl, util = autoload("plenary.curl"), autoload("aladin-nvim.util")
 do end (_2amodule_locals_2a)["curl"] = curl
+_2amodule_locals_2a["util"] = util
 local function init()
   return (1 + 2)
 end
 _2amodule_2a["init"] = init
 local function search_book_from_aladin(keyword)
   local ttb_key = os.getenv("ALADIN_TTB_KEY")
-  local url = ("http://www.aladin.co.kr/ttb/api/ItemSearch.aspx" .. "?" .. "ttbkey=" .. ttb_key .. "&Query=" .. keyword .. "&QueryType=Title" .. "&MaxResults=10" .. "&SearchTarget=Book" .. "&output=js")
+  local url = ("http://www.aladin.co.kr/ttb/api/ItemSearch.aspx" .. "?" .. "ttbkey=" .. ttb_key .. "&Query=" .. util.urlencode(keyword) .. "&QueryType=Title" .. "&MaxResults=10" .. "&SearchTarget=Book" .. "&output=js")
   return curl.get(url, {headers = {content_type = "application/json"}})
 end
 _2amodule_2a["search-book-from-aladin"] = search_book_from_aladin
