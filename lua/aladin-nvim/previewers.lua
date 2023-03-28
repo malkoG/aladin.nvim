@@ -26,12 +26,14 @@ local function book_list_previewer(opts)
     local bufname = self.state.bufname
     if ((bufname ~= entry.value) or (vim.api.nvim_buf_line_count(bufnr) == 1)) then
       writers["flush-buffer"](bufnr)
-      writers["write-line"](bufnr, {entry.book.itemId}, nil)
-      return writers["write-line"](bufnr, {entry.book.title}, nil)
+      writers["write-line"](bufnr, {tostring(entry.book.itemId)}, nil)
+      writers["write-line"](bufnr, {entry.book.title}, nil)
+      return writers["write-line"](bufnr, {(entry.book.description or " ")}, nil)
     else
       writers["flush-buffer"](bufnr)
-      writers["write-line"](bufnr, {entry.book.itemId}, nil)
-      return writers["write-line"](bufnr, {entry.book.title}, nil)
+      writers["write-line"](bufnr, {tostring(entry.book.itemId)}, nil)
+      writers["write-line"](bufnr, {entry.book.title}, nil)
+      return writers["write-line"](bufnr, {(entry.book.description or " ")}, nil)
     end
   end
   return previewers.new_buffer_previewer({title = "Aladin\236\151\144\236\132\156 \236\177\133 \236\157\180\235\166\132 \234\178\128\236\131\137", get_buffer_by_name = _1_, define_preview = _2_})

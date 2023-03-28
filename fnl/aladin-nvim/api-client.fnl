@@ -1,11 +1,8 @@
-(module aladin-nvim.main
+(module aladin-nvim.api-client
   {autoload {curl plenary.curl
              util aladin-nvim.util}})
 
-(defn init []
-  (+ 1 2))
-
-(defn search-book-from-aladin [keyword]
+(defn search-by-keyword [keyword]
   (let [
     ttb-key (os.getenv "ALADIN_TTB_KEY")
     url (
@@ -17,7 +14,7 @@
       "&Query="
       (util.urlencode keyword)
       "&QueryType=Title"
-      "&MaxResults=10"
+      "&MaxResults=50"
       "&SearchTarget=Book"
       "&output=js"
     )]

@@ -11,8 +11,9 @@ do
   _2amodule_locals_2a = (_2amodule_2a)["aniseed/locals"]
 end
 local autoload = (require("aniseed.autoload")).autoload
-local config, entry_display, finders, pickers, previewers = autoload("telescope.config"), autoload("telescope.pickers.entry_display"), autoload("telescope.finders"), autoload("telescope.pickers"), autoload("aladin-nvim.previewers")
-do end (_2amodule_locals_2a)["config"] = config
+local api_client, config, entry_display, finders, pickers, previewers = autoload("aladin-nvim.api-client"), autoload("telescope.config"), autoload("telescope.pickers.entry_display"), autoload("telescope.finders"), autoload("telescope.pickers"), autoload("aladin-nvim.previewers")
+do end (_2amodule_locals_2a)["api-client"] = api_client
+_2amodule_locals_2a["config"] = config
 _2amodule_locals_2a["entry_display"] = entry_display
 _2amodule_locals_2a["finders"] = finders
 _2amodule_locals_2a["pickers"] = pickers
@@ -22,12 +23,12 @@ local function make_display(entry)
   do
     local tbl_17_auto = {}
     local i_18_auto = #tbl_17_auto
-    for idx, attribute in pairs({"itemId", "title", "content"}) do
+    for idx, attribute in ipairs({"itemId", "title", "description"}) do
       local val_19_auto
       if (idx == 1) then
-        val_19_auto = {entry.book[attribute], "TelescopeResultsNumber"}
+        val_19_auto = {tostring(entry.book[attribute]), "TelescopeResultsNumber"}
       else
-        val_19_auto = {entry.book[attribute]}
+        val_19_auto = {(entry.book[attribute] or " ")}
       end
       if (nil ~= val_19_auto) then
         i_18_auto = (i_18_auto + 1)
@@ -37,7 +38,7 @@ local function make_display(entry)
     end
     columns = tbl_17_auto
   end
-  local displayer = entry_display.create({separator = " ", items = {{width = 15}, {width = 20}, {remaining = true}}})
+  local displayer = entry_display.create({separator = " ", items = {{width = 15}, {width = 30}, {remaining = true}}})
   return displayer(columns)
 end
 _2amodule_locals_2a["make-display"] = make_display
@@ -46,14 +47,24 @@ local function make_book_entry()
     if not book then
       return nil
     else
-      return {value = book.title, ordinal = (book.itemId .. " " .. book.title .. " " .. book.content), book = book, display = make_display}
+      return {value = book.title, ordinal = (book.itemId .. " " .. book.title .. " "), book = book, display = make_display}
     end
   end
   return _3_
 end
 _2amodule_2a["make-book-entry"] = make_book_entry
+local function prompt_keyword()
+  return vim.fn.input({prompt = "\234\178\128\236\131\137\237\149\160 \236\177\133\236\157\152 \236\157\180\235\166\132\236\157\132 \236\158\133\235\160\165\237\149\180\236\163\188\236\132\184\236\154\148: "})
+end
+_2amodule_locals_2a["prompt-keyword"] = prompt_keyword
+local function fetch_result(keyword)
+  local _let_5_ = api_client["search-by-keyword"](keyword)
+  local body = _let_5_["body"]
+  return (vim.json.decode(string.sub(body, 1, -2))).item
+end
+_2amodule_locals_2a["fetch-result"] = fetch_result
 local function book_list_picker(opts)
-  local entries = {{title = "aaabb111b", itemId = "12344", content = "Lorem Ipsum"}, {title = "Good Job", itemId = "445566", content = "What"}}
+  local entries = fetch_result(prompt_keyword())
   local conf = config.values
   return pickers.new(opts, {previewer = previewers["book-list"].new(opts), sorter = conf.generic_sorter(opts), finder = finders.new_table({results = entries, entry_maker = make_book_entry()})}):find()
 end
