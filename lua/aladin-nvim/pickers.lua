@@ -53,10 +53,6 @@ local function make_book_entry()
   return _3_
 end
 _2amodule_2a["make-book-entry"] = make_book_entry
-local function prompt_keyword()
-  return vim.fn.input({prompt = "\234\178\128\236\131\137\237\149\160 \236\177\133\236\157\152 \236\157\180\235\166\132\236\157\132 \236\158\133\235\160\165\237\149\180\236\163\188\236\132\184\236\154\148: "})
-end
-_2amodule_locals_2a["prompt-keyword"] = prompt_keyword
 local function fetch_result(keyword)
   local _let_5_ = api_client["search-by-keyword"](keyword)
   local body = _let_5_["body"]
@@ -64,9 +60,8 @@ local function fetch_result(keyword)
 end
 _2amodule_locals_2a["fetch-result"] = fetch_result
 local function book_list_picker(opts)
-  local entries = fetch_result(prompt_keyword())
   local conf = config.values
-  return pickers.new(opts, {previewer = previewers["book-list"].new(opts), sorter = conf.generic_sorter(opts), finder = finders.new_table({results = entries, entry_maker = make_book_entry()})}):find()
+  return pickers.new(opts, {previewer = previewers["book-list"].new(opts), sorter = conf.generic_sorter(opts), finder = finders.new_dynamic({fn = fetch_result, entry_maker = make_book_entry()})}):find()
 end
 _2amodule_2a["book_list_picker"] = book_list_picker
 return _2amodule_2a
