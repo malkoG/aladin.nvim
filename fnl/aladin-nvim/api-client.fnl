@@ -14,7 +14,7 @@
       "&Query="
       (util.urlencode keyword)
       "&QueryType=Title"
-      "&MaxResults=50"
+      "&MaxResults=5"
       "&SearchTarget=Book"
       "&output=js"
     )]

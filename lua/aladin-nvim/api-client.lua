@@ -16,7 +16,7 @@ do end (_2amodule_locals_2a)["curl"] = curl
 _2amodule_locals_2a["util"] = util
 local function search_by_keyword(keyword)
   local ttb_key = os.getenv("ALADIN_TTB_KEY")
-  local url = ("http://www.aladin.co.kr/ttb/api/ItemSearch.aspx" .. "?" .. "ttbkey=" .. ttb_key .. "&Query=" .. util.urlencode(keyword) .. "&QueryType=Title" .. "&MaxResults=50" .. "&SearchTarget=Book" .. "&output=js")
+  local url = ("http://www.aladin.co.kr/ttb/api/ItemSearch.aspx" .. "?" .. "ttbkey=" .. ttb_key .. "&Query=" .. util.urlencode(keyword) .. "&QueryType=Title" .. "&MaxResults=5" .. "&SearchTarget=Book" .. "&output=js")
   return curl.get(url, {headers = {content_type = "application/json"}})
 end
 _2amodule_2a["search-by-keyword"] = search_by_keyword
