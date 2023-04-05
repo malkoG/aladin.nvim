@@ -13,8 +13,7 @@
       ttb-key
       "&Query="
       (util.urlencode keyword)
-      "&QueryType=Title"
-      "&MaxResults=5"
+      "&MaxResults=15"
       "&SearchTarget=Book"
       "&output=js"
     )]
