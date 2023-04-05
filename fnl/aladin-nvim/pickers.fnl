@@ -7,9 +7,9 @@
              entry_display telescope.pickers.entry_display}})
 
 (defn- make-display [entry]
-  (let [columns (icollect [idx attribute (ipairs [:itemId :title :description])] (if (= idx 1) [(tostring (. entry :book attribute)) "TelescopeResultsNumber"] [(or (. entry :book attribute) " ")]))
+  (let [columns (icollect [idx attribute (ipairs [:itemId :author :title])] (if (= idx 1) [(tostring (. entry :book attribute)) "TelescopeResultsNumber"] [(or (. entry :book attribute) " ")]))
         displayer ((. entry_display :create)
-                   {:separator " " :items [{:width 15} {:width 30} {:remaining true}]})]
+                   {:separator " " :items [{:width 10} {:width 15} {:remaining true}]})]
     (displayer columns)))
 
 (defn make-book-entry []
@@ -17,8 +17,8 @@
     (if 
       (not book) 
       nil 
-      {:value (. book :title)
-       :ordinal (.. (. book :itemId) " " (. book :title) " ")
+      {:value (.. (. book :title) " " (. book :author))
+       :ordinal (.. (. book :itemId) " " (. book :author) " " (. book :title) " ")
        :book book
        :display make-display})))
 

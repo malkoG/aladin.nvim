@@ -23,7 +23,7 @@ local function make_display(entry)
   do
     local tbl_17_auto = {}
     local i_18_auto = #tbl_17_auto
-    for idx, attribute in ipairs({"itemId", "title", "description"}) do
+    for idx, attribute in ipairs({"itemId", "author", "title"}) do
       local val_19_auto
       if (idx == 1) then
         val_19_auto = {tostring(entry.book[attribute]), "TelescopeResultsNumber"}
@@ -38,7 +38,7 @@ local function make_display(entry)
     end
     columns = tbl_17_auto
   end
-  local displayer = entry_display.create({separator = " ", items = {{width = 15}, {width = 30}, {remaining = true}}})
+  local displayer = entry_display.create({separator = " ", items = {{width = 10}, {width = 15}, {remaining = true}}})
   return displayer(columns)
 end
 _2amodule_locals_2a["make-display"] = make_display
@@ -47,7 +47,7 @@ local function make_book_entry()
     if not book then
       return nil
     else
-      return {value = book.title, ordinal = (book.itemId .. " " .. book.title .. " "), book = book, display = make_display}
+      return {value = (book.title .. " " .. book.author), ordinal = (book.itemId .. " " .. book.author .. " " .. book.title .. " "), book = book, display = make_display}
     end
   end
   return _3_
