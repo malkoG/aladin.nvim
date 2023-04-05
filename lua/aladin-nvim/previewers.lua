@@ -27,11 +27,13 @@ local function book_list_previewer(opts)
     if ((bufname ~= entry.value) or (vim.api.nvim_buf_line_count(bufnr) == 1)) then
       writers["flush-buffer"](bufnr)
       writers["write-line"](bufnr, {tostring(entry.book.itemId)}, nil)
+      writers["write-line"](bufnr, {entry.book.author}, nil)
       writers["write-line"](bufnr, {entry.book.title}, nil)
       return writers["write-line"](bufnr, {(entry.book.description or " ")}, nil)
     else
       writers["flush-buffer"](bufnr)
       writers["write-line"](bufnr, {tostring(entry.book.itemId)}, nil)
+      writers["write-line"](bufnr, {entry.book.author}, nil)
       writers["write-line"](bufnr, {entry.book.title}, nil)
       return writers["write-line"](bufnr, {(entry.book.description or " ")}, nil)
     end

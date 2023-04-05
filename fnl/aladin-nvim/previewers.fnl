@@ -20,11 +20,13 @@
               (do
                 (writers.flush-buffer bufnr)
                 (writers.write-line bufnr [(tostring (. entry :book :itemId))] nil)
+                (writers.write-line bufnr [(. entry :book :author)] nil)
                 (writers.write-line bufnr [(. entry :book :title)] nil)
                 (writers.write-line bufnr [(or (. entry :book :description) " ")] nil))  
               (do
                 (writers.flush-buffer bufnr)
                 (writers.write-line bufnr [(tostring (. entry :book :itemId))] nil)
+                (writers.write-line bufnr [(. entry :book :author)] nil)
                 (writers.write-line bufnr [(. entry :book :title)] nil)
                 (writers.write-line bufnr [(or (. entry :book :description) " ")] nil)))
         ))
