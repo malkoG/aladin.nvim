@@ -8,11 +8,12 @@
     (let [{:status status :body body :headers headers} result]
       (t.= status 200 "Request is successful")
       (let [json-result (vim.json.decode (string.sub body 1 -2))]
-        (t.ok? (a.get-in json-result [:item]) "Item is not nil")))))
+        (print json-result)
+        (t.ok? (not (= (length json-result) 0)) "Item is not nil")))))
 
 (deftest test-searching-elixir-in-korean-has-at-least-one-record
   (let [result (api-client.search-by-keyword "엘릭서")]
     (let [{:status status :body body :headers headers} result]
       (t.= status 200 "Request is successful")
       (let [json-result (vim.json.decode (string.sub body 1 -2))]
-        (t.ok? (a.get-in json-result [:item]) "Item is not nil")))))
+        (t.ok? (not (= (length json-result) 0)) "Item is not nil")))))

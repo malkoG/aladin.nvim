@@ -25,15 +25,16 @@
        :display make-display})))
 
 (defn- fetch-result [keyword]
-  (let [{:body body} (api-client.search-by-keyword keyword)]
-    (. (vim.json.decode (string.sub body 1 -2)) :item)))
+  (if (= (length keyword) 0) [] 
+    (let [{:body body} (api-client.search-by-keyword keyword)]
+      (vim.json.decode (string.sub body 1 -2)))))
 
 (defn- paste-link [opts]
   (fn [prompt-bufnr]
     ((. actions :close) prompt-bufnr)
     (let [selection ((. action_state :get_selected_entry))
           title (. selection :book :title)
-          item-id (. selection :book :itemId
+          item-id (. selection :book :itemId)
           link (.. "https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=" item-id)
           generated-link (.. "[" title "]" "(" link ")")]
       (vim.api.nvim_put [generated-link] "" true true)

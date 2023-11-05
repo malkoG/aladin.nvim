@@ -56,34 +56,39 @@ local function make_book_entry()
 end
 _2amodule_2a["make-book-entry"] = make_book_entry
 local function fetch_result(keyword)
-  local _let_5_ = api_client["search-by-keyword"](keyword)
-  local body = _let_5_["body"]
-  return (vim.json.decode(string.sub(body, 1, -2))).item
+  if (#keyword == 0) then
+    return {}
+  else
+    local _let_5_ = api_client["search-by-keyword"](keyword)
+    local body = _let_5_["body"]
+    return vim.json.decode(string.sub(body, 1, -2))
+  end
 end
 _2amodule_locals_2a["fetch-result"] = fetch_result
 local function paste_link(opts)
-  local function _6_(prompt_bufnr)
+  local function _7_(prompt_bufnr)
     actions.close(prompt_bufnr)
     local selection = action_state.get_selected_entry()
     local title = selection.book.title
-    local link = ("https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=" .. selection.book.itemId)
+    local item_id = selection.book.itemId
+    local link = ("https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=" .. item_id)
     local generated_link = ("[" .. title .. "]" .. "(" .. link .. ")")
     vim.api.nvim_put({generated_link}, "", true, true)
     return vim.api.nvim_feedkeys("A", "m", false)
   end
-  return _6_
+  return _7_
 end
 _2amodule_locals_2a["paste-link"] = paste_link
 local function book_list_picker(opts)
   local conf = config.values
-  local function _7_(_, map)
+  local function _8_(_, map)
     map("i", "<c-i>", paste_link({}))
     map("n", "<c-i>", paste_link({}))
     map("i", "<c-cr>", paste_link({}))
     map("n", "<c-cr>", paste_link({}))
     return true
   end
-  return pickers.new(opts, {previewer = previewers["book-list"].new(opts), sorter = conf.generic_sorter(opts), attach_mappings = _7_, finder = finders.new_dynamic({fn = fetch_result, entry_maker = make_book_entry()})}):find()
+  return pickers.new(opts, {previewer = previewers["book-list"].new(opts), sorter = conf.generic_sorter(opts), attach_mappings = _8_, finder = finders.new_dynamic({fn = fetch_result, entry_maker = make_book_entry()})}):find()
 end
 _2amodule_2a["book_list_picker"] = book_list_picker
 return _2amodule_2a
